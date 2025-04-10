@@ -35,7 +35,7 @@ jobs:
 
   api-tests-rewrite-on-changes:
     needs: changed-files
-    if: ${{ length(needs.changed-files.outputs.uniqdirs) > 0 }}
+    if: ${{ needs.changed-files.outputs.uniqdirs }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
