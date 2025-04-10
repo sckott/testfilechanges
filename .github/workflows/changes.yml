@@ -9,7 +9,7 @@ jobs:
     if: ${{ ! github.event.pull_request.head.repo.fork }}
     runs-on: ubuntu-latest
     outputs:
-      uniqdirs: ${{ steps.get-dirs.outputs.uniqdirs }}
+      dirs: ${{ steps.get-dirs.outputs.alldirs }}
     steps:
       - uses: actions/checkout@v4
 
@@ -21,11 +21,9 @@ jobs:
 
       - name: Determine changed dirs
         id: get-dirs
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          uniqdirs=$(dirname ${ALL_CHANGED_FILES} | sort | uniq)
-          echo "uniqdirs=$uniqdirs" >> $GITHUB_OUTPUT
+          uniqdirs=$(dirname ${{ steps.changed-files.outputs.all_changed_files }} | sort | uniq)
+          echo "alldirs=$uniqdirs" >> $GITHUB_OUTPUT
 
       - name: List all changed WDL directories
         run: |
@@ -35,12 +33,12 @@ jobs:
 
   api-tests-rewrite-on-changes:
     needs: changed-files
-    if: ${{ needs.changed-files.outputs.uniqdirs }}
+    if: ${{ needs.changed-files.outputs.dirs }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        wdl: ${{ fromJson(needs.changed-files.outputs.uniqdirs) }}
+        wdl: ${{ fromJson(needs.changed-files.outputs.dirs) }}
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
