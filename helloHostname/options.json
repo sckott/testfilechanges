@@ -1,5 +1,5 @@
 {
   "workflow_failure_mode": "ContinueWhilePossible",
   "write_to_cache": false,
-  "read_from_cache": true
+  "read_from_cache": false
 }
