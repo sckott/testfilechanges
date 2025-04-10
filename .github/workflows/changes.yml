@@ -37,8 +37,12 @@ jobs:
     needs: changed-files
     if: ${{ needs.changed-files.outputs.uniqdirs }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        wdl: ${{ fromJson(needs.changed-files.outputs.uniqdirs) }}
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
         run: |
-          echo "Running API tests..."
+          echo "Running API tests... ${{ matrix.wdl }}"
