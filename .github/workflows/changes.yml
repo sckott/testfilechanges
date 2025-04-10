@@ -17,10 +17,16 @@ jobs:
         with:
           files: "**/*.{wdl,json}"
 
-      - name: List all changed files
+      - name: Determine changed dirs
+        id: get-dirs
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
+          uniqdirs=$(dirname ${ALL_CHANGED_FILES} | sort | uniq)
+          echo "uniqdirs=$uniqdirs" >> $GITHUB_OUTPUT
+
+      - name: List all changed WDL directories
+        run: |
+          for dir in ${{ steps.get-dirs.outputs.uniqdirs }}; do
+            echo "WDL directory $dir was changed"
           done
