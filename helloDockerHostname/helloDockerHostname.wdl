@@ -51,7 +51,7 @@ task GetStartTime {
   }
 
   runtime {
-    docker: "ubuntu:20.04"
+    docker: "ubuntu:20.049"
     cpu: 1
     memory: "1 GB"
   }
@@ -87,7 +87,7 @@ task ValidateExecutionTime {
     # Calculate duration using awk for floating point arithmetic
     duration=$(awk "BEGIN {print ~{end_time} - ~{start_time}}")
     echo "$duration" > duration.txt
-    
+
     # Check if duration is less than 120 seconds (2 minutes)
     awk -v dur="$duration" 'BEGIN {if (dur < 120) exit 0; exit 1}'
     if [ $? -eq 0 ]; then
