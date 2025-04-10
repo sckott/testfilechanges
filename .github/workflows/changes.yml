@@ -21,15 +21,15 @@ jobs:
 
       - name: Determine changed dirs
         id: get-dirs
+        if: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           uniqdirs=$(dirname ${{ steps.changed-files.outputs.all_changed_files }} | sort | uniq | jq -R . | jq -s | jq -c .)
           echo "uniqdirs=$uniqdirs" >> $GITHUB_OUTPUT
 
       - name: List all changed WDL directories
+        if: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          for dir in ${{ steps.get-dirs.outputs.uniqdirs }}; do
-            echo "WDL directory $dir was changed"
-          done
+          echo "Changes: ${{ steps.get-dirs.outputs.uniqdirs }}"
 
   api-tests-rewrite-on-changes:
     needs: changed-files
