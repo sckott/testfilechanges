@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        wdl: ${{ fromJson(needs.changed-files.outputs.dirs) }}
+        wdl: ${{ needs.changed-files.outputs.dirs }}
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
