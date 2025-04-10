@@ -30,3 +30,13 @@ jobs:
           for dir in ${{ steps.get-dirs.outputs.uniqdirs }}; do
             echo "WDL directory $dir was changed"
           done
+
+  api-tests-rewrite-on-changes:
+    needs: changed-files
+    if: ${{ needs.changed-files.outputs.any_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: |
+          echo "Running API tests..."
